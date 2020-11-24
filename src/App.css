@@ -1,0 +1,18 @@
+.main-container {
+  display: inline-grid;
+  grid-template-columns: auto auto;
+}
+
+CharacterList {
+  grid-column-start: 1;
+  grid-column-end: 2;
+}
+
+Form {
+  grid-column-start: 2;
+  grid-column-end: 3;
+}
+
+ul {
+  list-style-type: none;
+}
