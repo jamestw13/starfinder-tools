@@ -4,11 +4,12 @@ import CharacterList from "./CharacterList.js";
 import "./App.css";
 
 const App = () => {
-  const [cList, setCList] = useState([
-    { cName: "Jeff", cRace: "Vesk", id: 25 },
-    { cName: "Keljenkur", cRace: "Human", id: 1 },
-  ]);
-  const [cCurrent, setCCurrent] = useState({});
+  const [cList, setCList] = useState({"25": 
+    { cName: "Jeff", cRace: "vesk", id: 25 },
+    "1":
+    { cName: "Keljenkur", cRace: "human", id: 1 },
+});
+  const [cCurrent, setCCurrent] = useState({cName:"", cRace:"", id:""});
   return (
     <Fragment>
       <h1>Character Tracker</h1>

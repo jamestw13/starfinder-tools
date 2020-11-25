@@ -1,35 +1,50 @@
-import React, { useState } from "react";
+import React from "react";
 
 const Form = ({ cList, setCList, cCurrent, setCCurrent }) => {
-  const [cName, setCName] = useState("");
-  const [cRace, setCRace] = useState("");
-  const cNameHandler = (e) => {
-    setCName(e.target.value);
-  };
-  const cRaceHandler = (e) => {
-    setCRace(e.target.value);
+
+  const inputHandler = (e) => {
+    const value = e.target.value;
+    setCCurrent({
+      ...cCurrent, [e.target.name]: value
+    })
   };
   const cSaveHandler = (e) => {
+    e.preventDefault();
+    console.log(cCurrent.id);
+    console.log(cList)
+  
+  for (var i = 0; i < cList.length; i++) {
+  if (cList[i].Id === cCurrent.id) {
+    cList[i].cName = cCurrent.cName;
+    cList[i].cRace = cCurrent.cRace;
+    break;
+  }
+}
+
+    setCList(cList.filter((c) => c.id !== cCurrent.id));
+    console.log(cList)
+    // setCList([      ...cList,    ]);
+  };    
+  
+  const cSaveAsHandler = (e) => {
     e.preventDefault();
     setCList([
       ...cList,
       {
-        cName: cName,
-        cRace: cRace,
+        cName: cCurrent.cName,
+        cRace: cCurrent.cRace,
         id: Math.floor(Math.random() * 100000000),
       },
     ]);
   };
   const cNewHandler = (e) => {
     e.preventDefault();
-    setCName("");
-    setCRace("");
+    setCCurrent({cName:"", cRace:"", id:""});
   };
   return (
     <form>
-      <input onChange={cNameHandler} value={cCurrent.cName} type="text" />
-
-      <select onChange={cRaceHandler} value={cCurrent.cRace} name="">
+      <input onChange={inputHandler} value={cCurrent.cName} name="cName" type="text" />
+      <select onChange={inputHandler} value={cCurrent.cRace} name="cRace">
         <option value=""></option>
         <option value="human">human</option>
         <option value="vesk">Vesk</option>
@@ -37,6 +52,7 @@ const Form = ({ cList, setCList, cCurrent, setCCurrent }) => {
 
       <button onClick={cNewHandler}>New</button>
       <button onClick={cSaveHandler}>Save</button>
+      <button onClick={cSaveAsHandler}>Save As</button>
     </form>
   );
 };
