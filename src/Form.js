@@ -1,60 +1,93 @@
 import React from "react";
 
 const Form = ({ cList, setCList, cCurrent, setCCurrent }) => {
-
+  
+  // Input field updater
   const inputHandler = (e) => {
     const value = e.target.value;
     setCCurrent({
       ...cCurrent, [e.target.name]: value
     })
   };
-  const cSaveHandler = (e) => {
+  
+  // New Button Handler
+  const cNewHandler = (e) => {
     e.preventDefault();
-    console.log(cCurrent.id);
-    console.log(cList)
+    
+    // TODO Check if any fields have input
+    
+    // If fields have input, warn about loss of information
+    if (confirm("You will lose your unsaved information. Press Cancel to go back and save your character changes or Okay to clear the form for a new character")) {
+      // Prep to create new cCurrent
+      setCCurrent({cName:"", cRace:"", id: ""});
+    }
+  };
   
-  for (var i = 0; i < cList.length; i++) {
-  if (cList[i].Id === cCurrent.id) {
-    cList[i].cName = cCurrent.cName;
-    cList[i].cRace = cCurrent.cRace;
-    break;
-  }
-}
-
-    setCList(cList.filter((c) => c.id !== cCurrent.id));
-    console.log(cList)
-    // setCList([      ...cList,    ]);
-  };    
-  
+  // Save As Button Handler
   const cSaveAsHandler = (e) => {
     e.preventDefault();
+
+    // Add cCurrent to cList with new id
+    
+      cCurrent.id = Math.floor(Math.random() * 100000000)
+    
     setCList([
       ...cList,
       {
         cName: cCurrent.cName,
         cRace: cCurrent.cRace,
-        id: Math.floor(Math.random() * 100000000),
+        id: cCurrent.id
       },
     ]);
   };
-  const cNewHandler = (e) => {
+  
+  // Save Button Handler
+  const cSaveHandler = (e) => {
     e.preventDefault();
-    setCCurrent({cName:"", cRace:"", id:""});
-  };
+    
+    if (cCurrent.id === "") {
+      cSaveAsHandler(e);
+    }
+    else {
+      
+      
+      // Remove cCurrent character from cList
+      cList = cList.filter((c) => c.id !== cCurrent.id);
+      
+      // Replace cCurrent character on cList
+      setCList([
+        ...cList,
+        {
+          cName: cCurrent.cName,
+          cRace: cCurrent.cRace,
+          id: cCurrent.id,
+        },
+      ]);
+      
+    }
+  };    
+  
+  
+  
+  // FORM rendering
   return (
     <form>
-      <input onChange={inputHandler} value={cCurrent.cName} name="cName" type="text" />
-      <select onChange={inputHandler} value={cCurrent.cRace} name="cRace">
-        <option value=""></option>
-        <option value="human">human</option>
-        <option value="vesk">Vesk</option>
-      </select>
-
-      <button onClick={cNewHandler}>New</button>
-      <button onClick={cSaveHandler}>Save</button>
-      <button onClick={cSaveAsHandler}>Save As</button>
+    <button onClick={cNewHandler}>New</button>
+    <button onClick={cSaveHandler}>Save</button>
+    <button onClick={cSaveAsHandler}>Save As</button>
+    
+    <br/>
+    <br/>
+    <input onChange={inputHandler} value={cCurrent.cName} name="cName" type="text" />
+    <select onChange={inputHandler} value={cCurrent.cRace} name="cRace">
+    <option value=""></option>
+    <option value="human">human</option>
+    <option value="vesk">Vesk</option>
+    </select>
+    
     </form>
-  );
-};
-
-export default Form;
+    );
+  };
+  
+  export default Form;
+  
